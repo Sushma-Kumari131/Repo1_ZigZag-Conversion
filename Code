@@ -1,19 +1,40 @@
 class Solution {
-    public String convert(String s, int numRows) {
-
-        if (numRows == 1) return s;
-
-        StringBuilder ret = new StringBuilder();
-        int n = s.length();
-        int cycleLen = 2 * numRows - 2;
-
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j + i < n; j += cycleLen) {
-                ret.append(s.charAt(j + i));
-                if (i != 0 && i != numRows - 1 && j + cycleLen - i < n)
-                    ret.append(s.charAt(j + cycleLen - i));
-            }
+    public String convert(String s, int n) {
+        StringBuffer[] arrSB = new StringBuffer[n];
+        for (int i=0;i<arrSB.length;i++) {
+            arrSB[i] = new StringBuffer();
         }
-        return ret.toString();
+        int row = 0;
+        int i = 0;
+        if (n==1) {
+            return s;
+        }
+        while (i<s.length()) {        
+            while (row < n && i<s.length()) {
+                char ch = s.charAt(i);
+                arrSB[row].append(ch);
+                row++;
+                i++;
+            }
+            if (i == s.length()) {
+                break;
+            }
+            row-=2;
+            while (row >= 0 && i<s.length()) {
+                char ch = s.charAt(i);
+                arrSB[row].append(ch);
+                row--;
+                i++;
+            }
+            if (i == s.length()) {
+                break;
+            }
+            row+=2;
+        }
+        StringBuffer ans = new StringBuffer();
+        for (int j=0;j<arrSB.length;j++) {
+            ans.append(arrSB[j]);
+        }
+        return ans.toString();
     }
 }
